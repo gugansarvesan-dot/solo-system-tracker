@@ -1,6 +1,5 @@
 // app/page.tsx
 /* eslint-disable */
-
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -200,13 +199,13 @@ const DEFAULT_REWARDS: RewardItem[] = [
   { id: "rw4", title: "Movie Night Ticket (Weekend)", rarity: "LEGENDARY" },
 ];
 
-function getRankTitle(level: number): { rank: string; title: string; monarch: boolean } {
-  if (level >= 15) return { rank: "S-RANK", title: "Shadow Monarch", monarch: true };
-  if (level >= 10) return { rank: "A-RANK", title: "National Level Aspirant", monarch: true };
-  if (level >= 7) return { rank: "B-RANK", title: "High-Rank Designer", monarch: false };
-  if (level >= 4) return { rank: "C-RANK", title: "Awakened Tactician", monarch: false };
-  if (level >= 2) return { rank: "D-RANK", title: "Iron-Will Hunter", monarch: false };
-  return { rank: "E-RANK", title: "Initiate Hunter", monarch: false };
+function getRankTitle(level: number): { rank: string; title: string } {
+  if (level >= 15) return { rank: "S-RANK", title: "Shadow Monarch" };
+  if (level >= 10) return { rank: "A-RANK", title: "National Level Aspirant" };
+  if (level >= 7) return { rank: "B-RANK", title: "High-Rank Designer" };
+  if (level >= 4) return { rank: "C-RANK", title: "Awakened Tactician" };
+  if (level >= 2) return { rank: "D-RANK", title: "Iron-Will Hunter" };
+  return { rank: "E-RANK", title: "Initiate Hunter" };
 }
 
 function getDaysUntil(targetDateStr: string): number {
@@ -216,93 +215,19 @@ function getDaysUntil(targetDateStr: string): number {
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
-// Stylized 3D-layered Shadow Monarch (Jinwoo) SVG Art
-function ShadowMonarchArt({ activeArise = false }: { activeArise?: boolean }) {
-  return (
-    <div className="relative flex items-center justify-center select-none">
-      <div
-        className={`absolute h-56 w-56 rounded-full border border-purple-500/30 transition-all duration-700 ${
-          activeArise ? "scale-125 animate-ping bg-purple-600/20" : "animate-pulse bg-purple-950/20"
-        }`}
-      />
-      <div className="absolute h-44 w-44 rounded-full border border-cyan-400/30 shadow-[0_0_50px_rgba(168,85,247,0.55)]" />
-
-      <svg
-        viewBox="0 0 240 240"
-        className={`relative z-10 h-52 w-52 drop-shadow-[0_0_24px_rgba(168,85,247,0.85)] transition-transform duration-500 ${
-          activeArise ? "scale-110" : "hover:scale-105"
-        }`}
-      >
-        <defs>
-          <radialGradient id="monarchAura" cx="50%" cy="45%" r="50%">
-            <stop offset="0%" stopColor="#9333ea" stopOpacity="0.65" />
-            <stop offset="55%" stopColor="#1e1b4b" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#040812" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="cloakGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0f172a" />
-            <stop offset="50%" stopColor="#1e1b4b" />
-            <stop offset="100%" stopColor="#020617" />
-          </linearGradient>
-          <filter id="eyeGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        <circle cx="120" cy="120" r="110" fill="url(#monarchAura)" />
-
-        <path d="M45 210 Q30 140 65 95 Q55 145 75 210 Z" fill="#581c87" opacity="0.45" />
-        <path d="M195 210 Q210 140 175 95 Q185 145 165 210 Z" fill="#581c87" opacity="0.45" />
-        <path d="M70 220 Q60 120 90 70 Q82 140 98 220 Z" fill="#7e22ce" opacity="0.35" />
-        <path d="M170 220 Q180 120 150 70 Q158 140 142 220 Z" fill="#7e22ce" opacity="0.35" />
-
-        <path
-          d="M48 225 L66 142 L95 128 L120 152 L145 128 L174 142 L192 225 Z"
-          fill="url(#cloakGrad)"
-          stroke="#7c3aed"
-          strokeWidth="1.5"
-        />
-        <path d="M76 146 L86 112 L104 134 Z" fill="#090d1a" stroke="#a855f7" strokeWidth="1.2" />
-        <path d="M164 146 L154 112 L136 134 Z" fill="#090d1a" stroke="#a855f7" strokeWidth="1.2" />
-
-        <path d="M107 118 L109 144 L120 152 L131 144 L133 118 Z" fill="#0f172a" />
-        <path
-          d="M93 78 L96 106 L120 124 L144 106 L147 78 Z"
-          fill="#0b1120"
-          stroke="#38bdf8"
-          strokeWidth="0.8"
-          strokeOpacity="0.4"
-        />
-
-        <path
-          d="M84 86 Q82 48 118 42 Q156 44 156 86 L149 74 L142 88 L131 68 L120 86 L109 67 L98 87 L91 73 Z"
-          fill="#030712"
-          stroke="#6366f1"
-          strokeWidth="1"
-        />
-
-        <g filter="url(#eyeGlow)">
-          <polygon points="100,88 113,92 102,94" fill="#e879f9" />
-          <polygon points="140,88 127,92 138,94" fill="#e879f9" />
-          <line x1="78" y1="84" x2="112" y2="92" stroke="#c084fc" strokeWidth="1.3" opacity="0.85" />
-          <line x1="162" y1="84" x2="128" y2="92" stroke="#c084fc" strokeWidth="1.3" opacity="0.85" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-export default function SoloSystemApp() {
+export default function SoloSystemV3() {
+  // Boot & Video Overlay state
   const [showBootIntro, setShowBootIntro] = useState(true);
-  const [ariseTriggered, setAriseTriggered] = useState(false);
+  const [ariseBurst, setAriseBurst] = useState(false);
+  const [videoAvailable, setVideoAvailable] = useState(true);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Navigation & Search
   const [activeTab, setActiveTab] = useState<TabKey>("STATUS");
+  const [searchQuery, setSearchQuery] = useState("");
   const [muted, setMuted] = useState(false);
 
+  // Hunter Progression
   const [level, setLevel] = useState(1);
   const [xp, setXp] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -316,14 +241,17 @@ export default function SoloSystemApp() {
     STA: 10,
   });
 
+  // Quests & Sprint Timer
   const [quests, setQuests] = useState<Quest[]>(DEFAULT_QUESTS);
   const [newQuestTitle, setNewQuestTitle] = useState("");
   const [newQuestStat, setNewQuestStat] = useState<StatKey>("INT");
+  const [burstQuestId, setBurstQuestId] = useState<string | null>(null);
 
   const [timerSeconds, setTimerSeconds] = useState(25 * 60);
   const [timerRunning, setTimerRunning] = useState(false);
   const [selectedPresetMins, setSelectedPresetMins] = useState(25);
 
+  // Grimoire (Subjects / Subtopics / Files & Notes)
   const [grimoire, setGrimoire] = useState<SubjectFolder[]>(DEFAULT_GRIMOIRE);
   const [activeFolderId, setActiveFolderId] = useState<string>("sub-1");
   const [newFolderName, setNewFolderName] = useState("");
@@ -333,22 +261,24 @@ export default function SoloSystemApp() {
   const [newResValue, setNewResValue] = useState("");
   const [newResType, setNewResType] = useState<"LINK" | "NOTE">("LINK");
 
+  // Shadow Army & Reward Chests
   const [shadows, setShadows] = useState<ShadowSoldier[]>(DEFAULT_SHADOWS);
   const [chestsAvailable, setChestsAvailable] = useState(1);
   const [rewards, setRewards] = useState<RewardItem[]>(DEFAULT_REWARDS);
   const [newRewardTitle, setNewRewardTitle] = useState("");
 
+  // Holographic Modals
   const [levelUpModal, setLevelUpModal] = useState<{ level: number; rank: string } | null>(null);
   const [ariseCutscene, setAriseCutscene] = useState<ShadowSoldier | null>(null);
   const [lootModal, setLootModal] = useState<RewardItem | null>(null);
-  const [screenShake, setScreenShake] = useState(false);
-  const [midnightClock, setMidnightClock] = useState("00:00:00");
+  const [midnightClock, setMidnightClock] = useState("02:59:59");
 
   const loadedRef = useRef(false);
 
+  // Load saved state
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("solo_system_v2_state");
+      const raw = localStorage.getItem("solo_system_v3_state") || localStorage.getItem("solo_system_v2_state");
       if (raw) {
         const data = JSON.parse(raw);
         if (typeof data.level === "number") setLevel(data.level);
@@ -372,11 +302,12 @@ export default function SoloSystemApp() {
     loadedRef.current = true;
   }, []);
 
+  // Persist state
   useEffect(() => {
     if (!loadedRef.current) return;
     try {
       localStorage.setItem(
-        "solo_system_v2_state",
+        "solo_system_v3_state",
         JSON.stringify({
           level,
           xp,
@@ -396,6 +327,7 @@ export default function SoloSystemApp() {
     }
   }, [level, xp, streak, totalCompletedCount, unassignedPoints, stats, quests, grimoire, shadows, chestsAvailable, rewards]);
 
+  // Midnight countdown
   useEffect(() => {
     const tick = () => {
       const now = new Date();
@@ -412,6 +344,7 @@ export default function SoloSystemApp() {
     return () => clearInterval(id);
   }, []);
 
+  // Sprint timer countdown
   useEffect(() => {
     if (!timerRunning) return;
     const id = setInterval(() => {
@@ -432,15 +365,21 @@ export default function SoloSystemApp() {
   const nidDaysLeft = getDaysUntil("2026-12-20T09:00:00");
   const uceedDaysLeft = getDaysUntil("2027-01-18T09:00:00");
 
-  const handleAwakenArise = () => {
-    setAriseTriggered(true);
-    setScreenShake(true);
-    systemAudio.playArise();
-    setTimeout(() => setScreenShake(false), 650);
+  // Trigger ARISE Boot (Plays /arise.mp4 with full audio if uploaded, plus cinematic sub-bass drop)
+  const triggerAriseBoot = () => {
+    setAriseBurst(true);
+    systemAudio.playAriseBass();
+
+    if (videoRef.current && videoAvailable) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = muted;
+      videoRef.current.play().catch(() => {});
+    }
+
     setTimeout(() => {
       setShowBootIntro(false);
-      setAriseTriggered(false);
-    }, 1750);
+      setAriseBurst(false);
+    }, videoAvailable ? 4800 : 1900);
   };
 
   const grantXp = (amount: number, statKey?: StatKey, statAmount = 0) => {
@@ -479,6 +418,8 @@ export default function SoloSystemApp() {
         if (q.id !== id) return q;
         const nextDone = !q.completed;
         if (nextDone) {
+          setBurstQuestId(id);
+          setTimeout(() => setBurstQuestId(null), 650);
           grantXp(q.xp, q.stat, q.statGain);
           setTotalCompletedCount((c) => c + 1);
         }
@@ -594,11 +535,9 @@ export default function SoloSystemApp() {
   };
 
   const extractShadow = (soldier: ShadowSoldier) => {
-    setScreenShake(true);
-    systemAudio.playArise();
+    systemAudio.playAriseBass();
     setAriseCutscene(soldier);
     setShadows((prev) => prev.map((s) => (s.id === soldier.id ? { ...s, extracted: true } : s)));
-    setTimeout(() => setScreenShake(false), 700);
   };
 
   const openRewardChest = () => {
@@ -609,6 +548,7 @@ export default function SoloSystemApp() {
     setLootModal(pick);
   };
 
+  // Pentagon Radar Math
   const statKeys: StatKey[] = ["INT", "CRAFT", "DEX", "STR", "STA"];
   const maxRadarVal = Math.max(25, ...Object.values(stats));
   const radarPoints = statKeys
@@ -625,95 +565,165 @@ export default function SoloSystemApp() {
   const activeFolder = grimoire.find((f) => f.id === activeFolderId) || grimoire[0];
   const completedToday = quests.filter((q) => q.completed).length;
 
+  const filteredQuests = searchQuery.trim()
+    ? quests.filter(
+        (q) =>
+          q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          q.tag.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : quests;
+
+  // =========================================================================
+  // FULLSCREEN CINEMATIC "ARISE" BOOT SCREEN (Uses /arise.mp4 + Neon Grid)
+  // =========================================================================
   if (showBootIntro) {
     return (
-      <div
-        className={`relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#03050c] px-6 text-white select-none ${
-          screenShake ? "animate-bounce" : ""
-        }`}
-      >
+      <div className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden bg-[#02040a] p-6 text-white font-mono select-none">
+        {/* Background Video (/arise.mp4 from public folder if uploaded) */}
+        {videoAvailable && (
+          <video
+            ref={videoRef}
+            src="/arise.mp4"
+            playsInline
+            preload="auto"
+            onError={() => setVideoAvailable(false)}
+            onEnded={() => setShowBootIntro(false)}
+            className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+              ariseBurst ? "opacity-100" : "opacity-35"
+            }`}
+          />
+        )}
+
+        {/* Perspective Neon Grid + Purple Radial Aura */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-30"
+          className="pointer-events-none absolute inset-0 opacity-35"
           style={{
             backgroundImage:
-              "linear-gradient(to right, rgba(139,92,246,0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(56,189,248,0.2) 1px, transparent 1px)",
-            backgroundSize: "38px 38px",
-            transform: "perspective(500px) rotateX(45deg) scale(1.4)",
+              "linear-gradient(to right, rgba(56,189,248,0.28) 1px, transparent 1px), linear-gradient(to bottom, rgba(168,85,247,0.28) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            transform: "perspective(520px) rotateX(52deg) scale(1.5)",
             transformOrigin: "bottom",
           }}
         />
-        <div className="pointer-events-none absolute h-96 w-96 rounded-full bg-purple-700/25 blur-3xl" />
+        <div
+          className={`pointer-events-none absolute inset-0 transition-all duration-700 ${
+            ariseBurst
+              ? "bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.45)_0%,rgba(2,4,10,0.88)_75%)]"
+              : "bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.14)_0%,rgba(2,4,10,0.92)_75%)]"
+          }`}
+        />
 
-        <div className="z-10 mb-3 border border-purple-500/40 bg-purple-950/40 px-4 py-1 text-[11px] font-bold tracking-[0.28em] text-purple-300 uppercase shadow-[0_0_20px_rgba(168,85,247,0.4)]">
-          [ SYSTEM // SHADOW MONARCH PROTOCOL ]
+        {/* Top-left Holographic System Tag */}
+        <div className="relative z-10 flex w-full max-w-4xl items-center justify-between">
+          <div className="border-l-2 border-cyan-400 bg-slate-950/75 px-3 py-1.5 backdrop-blur-md">
+            <div className="text-[10px] tracking-[0.28em] text-cyan-400">[ SYSTEM //</div>
+            <div className="text-xs font-bold tracking-[0.22em] text-white">
+              SHADOW MONARCH PROTOCOL ]
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              systemAudio.playClick();
+              setShowBootIntro(false);
+            }}
+            className="border border-slate-700/80 bg-slate-950/70 px-3 py-1.5 text-[10px] tracking-widest text-slate-400 hover:border-cyan-400 hover:text-cyan-300"
+          >
+            [ SKIP → ]
+          </button>
         </div>
 
-        <ShadowMonarchArt activeArise={ariseTriggered} />
-
-        <div className="z-10 mt-4 text-center">
-          <h1
-            className={`font-black tracking-[0.22em] transition-all duration-300 ${
-              ariseTriggered
-                ? "scale-125 text-5xl text-purple-300 drop-shadow-[0_0_35px_rgba(192,132,252,1)]"
-                : "text-4xl text-white drop-shadow-[0_0_18px_rgba(56,189,248,0.8)]"
+        {/* Center ARISE Typography + Lightning Shockwave */}
+        <div className="relative z-10 flex flex-col items-center text-center">
+          {ariseBurst && (
+            <div className="pointer-events-none absolute -inset-16 animate-ping rounded-full border-2 border-purple-400/50" />
+          )}
+          <div
+            className={`font-sans font-black tracking-[0.22em] transition-all duration-500 ${
+              ariseBurst
+                ? "scale-110 text-6xl sm:text-8xl text-transparent bg-clip-text bg-gradient-to-b from-white via-purple-200 to-purple-500 drop-shadow-[0_0_45px_rgba(168,85,247,1)]"
+                : "text-4xl sm:text-6xl text-white drop-shadow-[0_0_24px_rgba(56,189,248,0.8)]"
             }`}
           >
-            {ariseTriggered ? "“ARISE.”" : "WELCOME, PLAYER"}
-          </h1>
-          <p className="mt-2 text-xs tracking-widest text-slate-400 uppercase">
-            NID Prelims: <span className="font-bold text-cyan-300">{nidDaysLeft}D</span> • UCEED 2027:{" "}
-            <span className="font-bold text-purple-300">{uceedDaysLeft}D</span>
-          </p>
+            {ariseBurst ? "ARISE" : "SYSTEM AWAKENED"}
+          </div>
+
+          <div className="mt-3 flex items-center gap-3 text-xs tracking-[0.24em] text-cyan-300 uppercase">
+            <span>NID PRELIMS: {nidDaysLeft}D</span>
+            <span className="text-purple-400">•</span>
+            <span>UCEED 2027: {uceedDaysLeft}D</span>
+          </div>
+
+          {!ariseBurst && (
+            <button
+              onClick={triggerAriseBoot}
+              className="mt-8 border border-purple-400/80 bg-purple-950/50 px-10 py-4 text-sm font-black tracking-[0.32em] text-white uppercase shadow-[0_0_35px_rgba(168,85,247,0.55)] backdrop-blur-md transition-all hover:border-cyan-300 hover:bg-purple-900/70 hover:shadow-[0_0_45px_rgba(56,189,248,0.75)] active:scale-95"
+            >
+              ⚡ COMMAND: ARISE
+            </button>
+          )}
         </div>
 
-        <button
-          onClick={handleAwakenArise}
-          disabled={ariseTriggered}
-          className="group relative z-10 mt-8 overflow-hidden border-2 border-purple-400 bg-gradient-to-r from-purple-900/70 via-indigo-900/70 to-cyan-900/70 px-10 py-4 text-sm font-black tracking-[0.3em] text-white uppercase shadow-[0_0_35px_rgba(168,85,247,0.65)] transition-all hover:scale-105 active:scale-95"
-        >
-          <span className="relative z-10">
-            {ariseTriggered ? "EXTRACTING SHADOWS..." : "⚡ COMMAND: ARISE"}
-          </span>
-        </button>
-
-        <button
-          onClick={() => {
-            systemAudio.playClick();
-            setShowBootIntro(false);
-          }}
-          className="z-10 mt-4 text-[11px] tracking-widest text-slate-500 uppercase hover:text-slate-300"
-        >
-          [ Skip Intro ]
-        </button>
+        {/* Bottom Status Footer */}
+        <div className="relative z-10 text-[10px] tracking-[0.28em] text-slate-500 uppercase">
+          {videoAvailable
+            ? "HD CINEMATIC STREAM READY (/arise.mp4)"
+            : "SYNTH BASS ENGINE ACTIVE • ADD /public/arise.mp4 FOR FULL VIDEO"}
+        </div>
       </div>
     );
   }
 
+  // =========================================================================
+  // MAIN HOLOGRAPHIC SYSTEM HUD (Glass Panels, Corner Brackets, Zero Clutter)
+  // =========================================================================
   return (
-    <div
-      className={`min-h-screen bg-[#040711] pb-24 text-slate-100 font-mono selection:bg-purple-500/30 ${
-        screenShake ? "animate-bounce" : ""
-      }`}
-    >
-      <header className="sticky top-0 z-30 border-b border-cyan-500/25 bg-[#050917]/90 px-4 py-3 backdrop-blur-md">
-        <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="inline-block h-2.5 w-2.5 animate-ping rounded-full bg-purple-400" />
+    <div className="relative min-h-screen bg-[#030610] pb-24 text-slate-100 font-mono selection:bg-purple-500/30">
+      {/* Subtle Ambient Neon Grid Background */}
+      <div
+        className="pointer-events-none fixed inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(56,189,248,0.16) 1px, transparent 1px), linear-gradient(to bottom, rgba(168,85,247,0.16) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_60%)]" />
+
+      {/* Top Holographic Header Bar */}
+      <header className="sticky top-0 z-30 border-b border-cyan-500/25 bg-[#040917]/85 px-4 py-2.5 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center border border-purple-400/60 bg-purple-950/50 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+              ♛
+            </div>
             <div>
-              <div className="text-[10px] tracking-[0.25em] text-cyan-400">SYSTEM // v2.0 MONARCH</div>
+              <div className="text-[10px] font-bold tracking-[0.22em] text-cyan-400">
+                SYSTEM // v3.0
+              </div>
               <div className="text-xs font-bold tracking-wider text-white">
                 LV.{level} • <span className="text-purple-400">{rankInfo.rank}</span>
               </div>
             </div>
           </div>
 
+          {/* Search Input */}
+          <div className="hidden sm:block">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search quests / topics..."
+              className="w-56 border border-cyan-500/30 bg-slate-950/70 px-3 py-1 text-xs text-cyan-100 placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+            />
+          </div>
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
                 setShowBootIntro(true);
-                setTimeout(() => handleAwakenArise(), 120);
+                setTimeout(() => triggerAriseBoot(), 100);
               }}
-              className="border border-purple-500/50 bg-purple-950/50 px-2.5 py-1 text-[10px] font-bold tracking-widest text-purple-300 hover:bg-purple-800/50"
+              className="border border-purple-400/60 bg-purple-950/50 px-3 py-1 text-[10px] font-bold tracking-[0.2em] text-purple-200 transition hover:border-cyan-300 hover:text-white"
             >
               ⚡ ARISE
             </button>
@@ -723,7 +733,7 @@ export default function SoloSystemApp() {
                 setMuted(next);
                 systemAudio.muted = next;
               }}
-              className="border border-cyan-500/40 bg-slate-900/80 px-2.5 py-1 text-[10px] text-cyan-300"
+              className="border border-cyan-500/35 bg-slate-950/70 px-2.5 py-1 text-xs text-cyan-300"
             >
               {muted ? "🔇" : "🔊"}
             </button>
@@ -731,75 +741,91 @@ export default function SoloSystemApp() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl space-y-4 px-4 pt-4">
+      <main className="relative z-10 mx-auto max-w-5xl space-y-4 px-4 pt-4">
+        {/* Top Dual Boss Gate Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="border border-cyan-500/35 bg-gradient-to-br from-[#071326] to-[#040812] p-3 shadow-[0_0_20px_rgba(6,182,212,0.12)]">
-            <div className="text-[10px] tracking-widest text-cyan-400">BOSS GATE I: NID PRELIMS</div>
-            <div className="mt-1 text-xl font-black text-white">{nidDaysLeft} DAYS LEFT</div>
-            <div className="text-[10px] text-slate-400">Dec 20, 2026 • Top 1,300</div>
+          <div className="relative border border-cyan-400/35 bg-[#061124]/80 p-3.5 shadow-[0_0_25px_rgba(6,182,212,0.1)] backdrop-blur-md">
+            <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-cyan-400" />
+            <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-cyan-400" />
+            <div className="text-[10px] tracking-[0.2em] text-cyan-400">
+              BOSS GATE I: NID PRELIMS
+            </div>
+            <div className="mt-1 text-xl sm:text-2xl font-black tracking-wider text-white">
+              {nidDaysLeft} DAYS LEFT
+            </div>
+            <div className="text-[10px] text-slate-400">Dec 20, 2026 • Target: Top 1,300</div>
           </div>
-          <div className="border border-purple-500/40 bg-gradient-to-br from-[#160b2e] to-[#040812] p-3 shadow-[0_0_20px_rgba(168,85,247,0.16)]">
-            <div className="text-[10px] tracking-widest text-purple-300">BOSS GATE II: UCEED 2027</div>
-            <div className="mt-1 text-xl font-black text-white">{uceedDaysLeft} DAYS LEFT</div>
-            <div className="text-[10px] text-slate-400">Jan 2027 • IIT AIR &lt; 100</div>
+
+          <div className="relative border border-purple-400/40 bg-[#120926]/80 p-3.5 shadow-[0_0_25px_rgba(168,85,247,0.12)] backdrop-blur-md">
+            <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-purple-400" />
+            <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-purple-400" />
+            <div className="text-[10px] tracking-[0.2em] text-purple-300">
+              BOSS GATE II: UCEED 2027
+            </div>
+            <div className="mt-1 text-xl sm:text-2xl font-black tracking-wider text-white">
+              {uceedDaysLeft} DAYS LEFT
+            </div>
+            <div className="text-[10px] text-slate-400">Jan 2027 • Target: IIT AIR &lt; 100</div>
           </div>
         </div>
 
+        {/* ================================================================= */}
+        {/* TAB 1: STATUS WINDOW + ATTRIBUTE PENTAGON RADAR                   */}
+        {/* ================================================================= */}
         {activeTab === "STATUS" && (
-          <div className="space-y-4">
-            <div className="relative overflow-hidden border border-purple-500/40 bg-gradient-to-b from-[#0b1026] to-[#050814] p-5 shadow-[0_0_30px_rgba(139,92,246,0.2)]">
-              <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            {/* Left / Top Status Window */}
+            <div className="relative border border-cyan-400/40 bg-[#061022]/85 p-5 shadow-[0_0_30px_rgba(6,182,212,0.14)] backdrop-blur-md lg:col-span-6">
+              <span className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-cyan-400" />
+              <span className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-cyan-400" />
+              <span className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-cyan-400" />
+              <span className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-cyan-400" />
+
+              <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3">
                 <div>
-                  <div className="inline-block border border-purple-400/50 bg-purple-950/60 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-purple-300">
-                    {rankInfo.rank} // STREAK: {streak} DAYS
-                  </div>
-                  <h2 className="mt-2 text-3xl font-black tracking-wider text-white">
-                    LEVEL {level}
+                  <div className="text-[10px] tracking-[0.25em] text-cyan-400">STATUS WINDOW</div>
+                  <h2 className="mt-1 text-3xl font-black tracking-wider text-white">
+                    LEVEL {level} <span className="text-lg text-cyan-300">| {rankInfo.rank}</span>
                   </h2>
-                  <p className="text-xs tracking-widest text-cyan-300 uppercase">
-                    CLASS: {rankInfo.title}
-                  </p>
-
-                  <div className="mt-4 w-64 max-w-full">
-                    <div className="flex justify-between text-[11px] text-slate-300">
-                      <span>EXPERIENCE (XP)</span>
-                      <span>
-                        {xp} / {xpNeeded} XP
-                      </span>
-                    </div>
-                    <div className="mt-1.5 h-2.5 w-full overflow-hidden border border-cyan-500/40 bg-slate-950">
-                      <div
-                        className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500"
-                        style={{ width: `${Math.min(100, Math.round((xp / xpNeeded) * 100))}%` }}
-                      />
-                    </div>
+                  <div className="text-xs text-slate-300">
+                    CLASS: <span className="text-purple-300">{rankInfo.title}</span>
                   </div>
                 </div>
-
-                <div className="scale-75 sm:scale-90">
-                  <ShadowMonarchArt />
+                <div className="border border-purple-400/50 bg-purple-950/50 px-3 py-1.5 text-right">
+                  <div className="text-[9px] tracking-widest text-purple-300">STREAK</div>
+                  <div className="text-sm font-black text-white">{streak} DAYS</div>
                 </div>
               </div>
-            </div>
 
-            {unassignedPoints > 0 && (
-              <div className="animate-pulse border border-amber-400/70 bg-amber-950/30 p-3 text-center">
-                <div className="text-xs font-black tracking-widest text-amber-300">
-                  ★ {unassignedPoints} UNASSIGNED STAT POINT{unassignedPoints > 1 ? "S" : ""} AVAILABLE ★
+              {/* XP Bar */}
+              <div className="mt-4">
+                <div className="flex justify-between text-[11px] text-cyan-200">
+                  <span>EXPERIENCE (XP)</span>
+                  <span>
+                    {xp} / {xpNeeded} XP ({Math.min(100, Math.round((xp / xpNeeded) * 100))}%)
+                  </span>
                 </div>
-                <div className="text-[11px] text-amber-200/80">
-                  Tap <span className="font-bold">[ + ]</span> below to upgrade your Hunter attributes!
+                <div className="mt-1.5 h-2.5 w-full overflow-hidden border border-cyan-400/40 bg-slate-950">
+                  <div
+                    className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500"
+                    style={{ width: `${Math.min(100, Math.round((xp / xpNeeded) * 100))}%` }}
+                  />
                 </div>
               </div>
-            )}
 
-            <div className="grid grid-cols-1 gap-4 border border-cyan-500/30 bg-[#060c1d] p-4 sm:grid-cols-2">
-              <div className="flex flex-col items-center justify-center">
-                <div className="mb-1 text-[10px] tracking-widest text-cyan-400">
-                  ATTRIBUTE RADAR MATRIX
+              {/* Unassigned Stat Points Alert */}
+              {unassignedPoints > 0 && (
+                <div className="mt-4 border border-amber-400/70 bg-amber-950/30 p-2.5 text-center">
+                  <div className="text-xs font-black tracking-widest text-amber-300">
+                    ★ {unassignedPoints} STAT POINT{unassignedPoints > 1 ? "S" : ""} AVAILABLE ★
+                  </div>
                 </div>
-                <svg viewBox="0 0 180 180" className="h-48 w-48">
-                  {[0.35, 0.65, 1].map((scale, idx) => {
+              )}
+
+              {/* Pentagon Radar Chart */}
+              <div className="mt-4 flex flex-col items-center">
+                <svg viewBox="0 0 180 180" className="h-52 w-52">
+                  {[0.35, 0.68, 1].map((scale, idx) => {
                     const ringPts = statKeys
                       .map((_, i) => {
                         const a = (Math.PI * 2 * i) / 5 - Math.PI / 2;
@@ -819,8 +845,8 @@ export default function SoloSystemApp() {
                   })}
                   <polygon
                     points={radarPoints}
-                    fill="rgba(168, 85, 247, 0.32)"
-                    stroke="#38bdf8"
+                    fill="rgba(56, 189, 248, 0.22)"
+                    stroke="#a855f7"
                     strokeWidth="2"
                   />
                   {statKeys.map((key, i) => {
@@ -834,7 +860,7 @@ export default function SoloSystemApp() {
                         y={ly}
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fill="#bae6fd"
+                        fill="#7dd3fc"
                         fontSize="9"
                         fontWeight="bold"
                       >
@@ -844,91 +870,96 @@ export default function SoloSystemApp() {
                   })}
                 </svg>
               </div>
+            </div>
 
-              <div className="flex flex-col justify-center space-y-2.5">
-                {(
-                  [
-                    { key: "INT", desc: "Logic / PYQ Accuracy" },
-                    { key: "CRAFT", desc: "Sketching / Storyboard" },
-                    { key: "DEX", desc: "Perspective / 3D Lines" },
-                    { key: "STR", desc: "Physical Conditioning" },
-                    { key: "STA", desc: "Deep Focus Stamina" },
-                  ] as { key: StatKey; desc: string }[]
-                ).map((item) => (
-                  <div
-                    key={item.key}
-                    className="flex items-center justify-between border border-slate-800 bg-slate-950/70 px-3 py-2"
-                  >
-                    <div>
-                      <div className="text-xs font-bold text-cyan-300">
-                        {item.key}: <span className="text-base text-white">{stats[item.key]}</span>
+            {/* Right / Bottom Attributes + Quick Quests Preview */}
+            <div className="space-y-4 lg:col-span-6">
+              <div className="border border-cyan-500/30 bg-[#061022]/85 p-4 backdrop-blur-md">
+                <div className="mb-3 text-[10px] font-bold tracking-[0.24em] text-cyan-400">
+                  HUNTER ATTRIBUTES
+                </div>
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  {(
+                    [
+                      { key: "INT", desc: "Logic / PYQ" },
+                      { key: "CRAFT", desc: "Sketching" },
+                      { key: "DEX", desc: "Lines / 3D" },
+                      { key: "STR", desc: "Workout" },
+                      { key: "STA", desc: "Deep Focus" },
+                    ] as { key: StatKey; desc: string }[]
+                  ).map((item) => (
+                    <div
+                      key={item.key}
+                      className="flex items-center justify-between border border-cyan-500/25 bg-slate-950/75 px-3 py-2"
+                    >
+                      <div>
+                        <div className="text-[10px] font-bold text-cyan-300">{item.key}</div>
+                        <div className="text-lg font-black text-white">{stats[item.key]}</div>
+                        <div className="text-[9px] text-slate-400">{item.desc}</div>
                       </div>
-                      <div className="text-[10px] text-slate-400">{item.desc}</div>
+                      {unassignedPoints > 0 && (
+                        <button
+                          onClick={() => allocateStatPoint(item.key)}
+                          className="border border-amber-400 bg-amber-500/20 px-2 py-1 text-xs font-black text-amber-300 hover:bg-amber-500/40"
+                        >
+                          +1
+                        </button>
+                      )}
                     </div>
-                    {unassignedPoints > 0 && (
-                      <button
-                        onClick={() => allocateStatPoint(item.key)}
-                        className="border border-amber-400 bg-amber-500/20 px-2.5 py-1 text-xs font-black text-amber-300 hover:bg-amber-500/40"
-                      >
-                        +1
-                      </button>
-                    )}
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Daily Quests Mirror (just like the video dashboard!) */}
+              <div className="border border-cyan-500/30 bg-[#061022]/85 p-4 backdrop-blur-md">
+                <div className="mb-2.5 flex items-center justify-between">
+                  <div className="text-[11px] font-bold tracking-[0.2em] text-cyan-300">
+                    DAILY QUEST: PREPARATION ({completedToday}/{quests.length})
                   </div>
-                ))}
+                  <div className="text-[10px] font-bold text-rose-400">RESET {midnightClock}</div>
+                </div>
+                <div className="space-y-2">
+                  {quests.slice(0, 3).map((q) => (
+                    <div
+                      key={q.id}
+                      onClick={() => toggleQuest(q.id)}
+                      className={`relative flex cursor-pointer items-center justify-between border px-3 py-2.5 text-xs transition-all ${
+                        q.completed
+                          ? "border-emerald-500/40 bg-emerald-950/20 text-slate-400 line-through"
+                          : "border-cyan-500/30 bg-slate-950/75 text-white hover:border-purple-400"
+                      }`}
+                    >
+                      {burstQuestId === q.id && (
+                        <span className="pointer-events-none absolute inset-0 animate-ping border border-purple-400 bg-purple-500/20" />
+                      )}
+                      <span className="truncate pr-2">{q.title}</span>
+                      <span className="text-cyan-300">{q.completed ? "✓" : "□"}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    systemAudio.playClick();
+                    setActiveTab("QUESTS");
+                  }}
+                  className="mt-3 w-full border border-cyan-500/35 bg-cyan-950/30 py-1.5 text-[10px] font-bold tracking-[0.22em] text-cyan-300 hover:border-cyan-300"
+                >
+                  OPEN FULL QUEST & SPRINT CONSOLE →
+                </button>
               </div>
             </div>
           </div>
         )}
 
+        {/* ================================================================= */}
+        {/* TAB 2: DAILY QUESTS & DUNGEON SPRINT TIMER                        */}
+        {/* ================================================================= */}
         {activeTab === "QUESTS" && (
-          <div className="space-y-4">
-            <div className="border border-cyan-500/35 bg-[#060d20] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[10px] tracking-widest text-cyan-400">
-                    DUNGEON SPRINT TIMER
-                  </div>
-                  <div className="mt-1 text-3xl font-black tracking-wider text-white">
-                    {String(Math.floor(timerSeconds / 60)).padStart(2, "0")}:
-                    {String(timerSeconds % 60).padStart(2, "0")}
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {[25, 60, 120].map((mins) => (
-                    <button
-                      key={mins}
-                      onClick={() => {
-                        systemAudio.playClick();
-                        setTimerRunning(false);
-                        setSelectedPresetMins(mins);
-                        setTimerSeconds(mins * 60);
-                      }}
-                      className={`border px-2.5 py-1 text-[10px] font-bold ${
-                        selectedPresetMins === mins
-                          ? "border-purple-400 bg-purple-600/30 text-purple-200"
-                          : "border-slate-700 text-slate-400"
-                      }`}
-                    >
-                      {mins}M
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => {
-                      systemAudio.playClick();
-                      setTimerRunning((r) => !r);
-                    }}
-                    className="border border-cyan-400 bg-cyan-500/20 px-3 py-1 text-xs font-black text-cyan-200"
-                  >
-                    {timerRunning ? "PAUSE" : "START"}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-cyan-500/35 bg-[#060d20] p-4">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div className="border border-cyan-400/35 bg-[#061022]/85 p-4 backdrop-blur-md lg:col-span-8">
               <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-2">
                 <div>
-                  <div className="text-xs font-bold tracking-widest text-cyan-300">
+                  <div className="text-xs font-bold tracking-[0.22em] text-cyan-300">
                     DAILY QUEST: PREPARATION
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -942,16 +973,19 @@ export default function SoloSystemApp() {
               </div>
 
               <div className="space-y-2.5">
-                {quests.map((q) => (
+                {filteredQuests.map((q) => (
                   <div
                     key={q.id}
                     onClick={() => toggleQuest(q.id)}
-                    className={`flex cursor-pointer items-center justify-between border p-3 transition-all ${
+                    className={`relative flex cursor-pointer items-center justify-between border p-3 transition-all ${
                       q.completed
-                        ? "border-emerald-500/40 bg-emerald-950/20 opacity-70"
-                        : "border-cyan-500/30 bg-[#081229] hover:border-purple-400"
+                        ? "border-emerald-500/40 bg-emerald-950/20 opacity-75"
+                        : "border-cyan-500/30 bg-[#081329]/85 hover:border-purple-400"
                     }`}
                   >
+                    {burstQuestId === q.id && (
+                      <div className="pointer-events-none absolute inset-0 animate-ping border-2 border-purple-400 bg-purple-500/20" />
+                    )}
                     <div className="pr-3">
                       <div className="text-[10px] font-bold tracking-wider text-cyan-400">
                         [{q.tag}] +{q.xp} XP • +{q.statGain} {q.stat}
@@ -1004,16 +1038,75 @@ export default function SoloSystemApp() {
                 </button>
               </form>
             </div>
+
+            {/* Right Panel: Dungeon Sprint Timer */}
+            <div className="flex flex-col justify-between border border-purple-400/40 bg-[#090d22]/85 p-5 text-center backdrop-blur-md lg:col-span-4">
+              <div>
+                <div className="text-[10px] font-bold tracking-[0.25em] text-purple-300">
+                  DUNGEON SPRINT TIMER
+                </div>
+                <div className="my-5 text-5xl font-black tracking-widest text-white drop-shadow-[0_0_20px_rgba(56,189,248,0.55)]">
+                  {String(Math.floor(timerSeconds / 60)).padStart(2, "0")}:
+                  {String(timerSeconds % 60).padStart(2, "0")}
+                </div>
+
+                <div className="flex justify-center gap-2">
+                  {[25, 60, 120].map((mins) => (
+                    <button
+                      key={mins}
+                      onClick={() => {
+                        systemAudio.playClick();
+                        setTimerRunning(false);
+                        setSelectedPresetMins(mins);
+                        setTimerSeconds(mins * 60);
+                      }}
+                      className={`border px-3 py-1 text-[10px] font-bold ${
+                        selectedPresetMins === mins
+                          ? "border-purple-400 bg-purple-600/30 text-purple-200"
+                          : "border-slate-700 text-slate-400"
+                      }`}
+                    >
+                      {mins}M
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-2">
+                <button
+                  onClick={() => {
+                    systemAudio.playClick();
+                    setTimerRunning((r) => !r);
+                  }}
+                  className="w-full border border-cyan-400 bg-cyan-500/20 py-2.5 text-xs font-black tracking-[0.25em] text-cyan-200 hover:bg-cyan-500/35"
+                >
+                  {timerRunning ? "PAUSE SPRINT" : "START SPRINT"}
+                </button>
+                <button
+                  onClick={() => {
+                    systemAudio.playClick();
+                    setTimerRunning(false);
+                    setTimerSeconds(selectedPresetMins * 60);
+                  }}
+                  className="w-full border border-slate-700 bg-slate-950/70 py-2 text-[10px] font-bold tracking-[0.22em] text-slate-400 hover:text-white"
+                >
+                  RESET TIMER
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
+        {/* ================================================================= */}
+        {/* TAB 3: GRIMOIRE (TOPICS, DRIVE LINKS & ERROR NOTES)               */}
+        {/* ================================================================= */}
         {activeTab === "GRIMOIRE" && (
           <div className="space-y-4">
-            <div className="border border-purple-500/35 bg-[#070c1f] p-4">
-              <div className="text-[10px] tracking-widest text-purple-300">
+            <div className="border border-purple-500/35 bg-[#070c1f]/85 p-4 backdrop-blur-md">
+              <div className="text-[10px] tracking-[0.25em] text-purple-300">
                 CUSTOM SYLLABUS & RESOURCE GRIMOIRE
               </div>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2.5 flex flex-wrap gap-2">
                 {grimoire.map((folder) => {
                   const doneCount = folder.topics.filter((t) => t.done).length;
                   return (
@@ -1065,7 +1158,7 @@ export default function SoloSystemApp() {
             </div>
 
             {activeFolder && (
-              <div className="space-y-4 border border-cyan-500/30 bg-[#060c1d] p-4">
+              <div className="space-y-4 border border-cyan-500/30 bg-[#060c1d]/85 p-4 backdrop-blur-md">
                 <div>
                   <div className="text-xs font-black tracking-wider text-white">
                     {activeFolder.name}
@@ -1188,9 +1281,12 @@ export default function SoloSystemApp() {
           </div>
         )}
 
+        {/* ================================================================= */}
+        {/* TAB 4: SHADOW ARMY EXTRACTION & BLESSED REWARD CHESTS             */}
+        {/* ================================================================= */}
         {activeTab === "SHADOWS" && (
           <div className="space-y-4">
-            <div className="border border-amber-400/50 bg-gradient-to-br from-[#1f1506] to-[#050812] p-4 shadow-[0_0_25px_rgba(245,158,11,0.18)]">
+            <div className="border border-amber-400/50 bg-gradient-to-br from-[#1f1506]/90 to-[#050812]/90 p-4 shadow-[0_0_25px_rgba(245,158,11,0.18)] backdrop-blur-md">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-[10px] font-bold tracking-widest text-amber-300">
@@ -1208,7 +1304,7 @@ export default function SoloSystemApp() {
                   disabled={chestsAvailable <= 0}
                   className={`border-2 px-4 py-2.5 text-xs font-black tracking-widest uppercase transition-all ${
                     chestsAvailable > 0
-                      ? "animate-pulse border-amber-300 bg-amber-500/25 text-amber-200 hover:scale-105"
+                      ? "border-amber-300 bg-amber-500/25 text-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.45)] hover:scale-105"
                       : "border-slate-700 bg-slate-900 text-slate-600"
                   }`}
                 >
@@ -1260,7 +1356,7 @@ export default function SoloSystemApp() {
               </div>
             </div>
 
-            <div className="border border-purple-500/40 bg-[#070a1a] p-4">
+            <div className="border border-purple-500/40 bg-[#070a1a]/85 p-4 backdrop-blur-md">
               <div className="mb-3">
                 <div className="text-xs font-black tracking-widest text-purple-300">
                   SHADOW ARMY EXTRACTION
@@ -1305,7 +1401,7 @@ export default function SoloSystemApp() {
                         ) : unlocked ? (
                           <button
                             onClick={() => extractShadow(s)}
-                            className="w-full animate-pulse border border-purple-400 bg-purple-600/40 py-1.5 text-xs font-black tracking-[0.25em] text-white shadow-[0_0_15px_rgba(168,85,247,0.6)]"
+                            className="w-full border border-purple-400 bg-purple-600/40 py-1.5 text-xs font-black tracking-[0.25em] text-white shadow-[0_0_15px_rgba(168,85,247,0.6)] hover:bg-purple-600/60"
                           >
                             ⚡ ARISE
                           </button>
@@ -1324,15 +1420,16 @@ export default function SoloSystemApp() {
         )}
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-cyan-500/30 bg-[#040814]/95 px-2 py-2 backdrop-blur-md">
-        <div className="mx-auto grid max-w-3xl grid-cols-4 gap-1.5">
+      {/* Bottom Holographic Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-cyan-500/30 bg-[#040814]/90 px-2 py-2 backdrop-blur-xl">
+        <div className="mx-auto grid max-w-5xl grid-cols-4 gap-2">
           {(
             [
-              { key: "STATUS", icon: "◈", label: "STATUS" },
-              { key: "QUESTS", icon: "⚔", label: "QUESTS" },
-              { key: "GRIMOIRE", icon: "❖", label: "TOPICS" },
-              { key: "SHADOWS", icon: "♛", label: "ARISE" },
-            ] as { key: TabKey; icon: string; label: string }[]
+              { key: "STATUS", label: "[ STATUS ]" },
+              { key: "QUESTS", label: "[ QUESTS ]" },
+              { key: "GRIMOIRE", label: "[ GRIMOIRE ]" },
+              { key: "SHADOWS", label: "[ SHADOWS ]" },
+            ] as { key: TabKey; label: string }[]
           ).map((tab) => (
             <button
               key={tab.key}
@@ -1340,21 +1437,21 @@ export default function SoloSystemApp() {
                 systemAudio.playClick();
                 setActiveTab(tab.key);
               }}
-              className={`flex flex-col items-center justify-center border py-1.5 text-[10px] font-bold tracking-widest transition-all ${
+              className={`border py-2 text-[10px] sm:text-xs font-bold tracking-[0.18em] transition-all ${
                 activeTab === tab.key
-                  ? "border-purple-400 bg-purple-950/60 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]"
-                  : "border-transparent text-slate-400 hover:text-cyan-300"
+                  ? "border-cyan-400 bg-cyan-950/50 text-white shadow-[0_0_18px_rgba(56,189,248,0.35)]"
+                  : "border-cyan-500/20 bg-slate-950/60 text-slate-400 hover:border-cyan-400/50 hover:text-cyan-200"
               }`}
             >
-              <span className="text-sm">{tab.icon}</span>
-              <span>{tab.label}</span>
+              {tab.label}
             </button>
           ))}
         </div>
       </nav>
 
+      {/* Level Up Modal */}
       {levelUpModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-6 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-6 backdrop-blur-md">
           <div className="w-full max-w-sm border-2 border-cyan-400 bg-[#050c1f] p-6 text-center shadow-[0_0_50px_rgba(56,189,248,0.65)]">
             <div className="text-xs font-bold tracking-[0.3em] text-cyan-300">
               [ SYSTEM NOTIFICATION ]
@@ -1381,14 +1478,14 @@ export default function SoloSystemApp() {
         </div>
       )}
 
+      {/* Shadow Extraction Cutscene Modal */}
       {ariseCutscene && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-6 backdrop-blur-md">
           <div className="w-full max-w-sm border-2 border-purple-500 bg-[#090518] p-6 text-center shadow-[0_0_60px_rgba(168,85,247,0.85)]">
-            <ShadowMonarchArt activeArise />
-            <div className="mt-2 text-3xl font-black tracking-[0.28em] text-purple-300 drop-shadow-[0_0_25px_rgba(192,132,252,1)]">
-              “ARISE!”
+            <div className="text-4xl font-black tracking-[0.3em] text-purple-300 drop-shadow-[0_0_25px_rgba(192,132,252,1)]">
+              ARISE
             </div>
-            <p className="mt-2 text-sm font-bold text-white">
+            <p className="mt-3 text-sm font-bold text-white">
               Shadow Soldier <span className="text-purple-400">{ariseCutscene.name}</span> Joined Your
               Army!
             </p>
@@ -1406,8 +1503,9 @@ export default function SoloSystemApp() {
         </div>
       )}
 
+      {/* Loot Box Modal */}
       {lootModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-6 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 px-6 backdrop-blur-md">
           <div className="w-full max-w-sm border-2 border-amber-400 bg-[#140d04] p-6 text-center shadow-[0_0_50px_rgba(251,191,36,0.65)]">
             <div className="text-xs font-bold tracking-[0.28em] text-amber-300">
               [ BLESSED BOX OPENED ]
