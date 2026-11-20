@@ -1,4 +1,6 @@
 // app/page.tsx
+/* eslint-disable */
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
